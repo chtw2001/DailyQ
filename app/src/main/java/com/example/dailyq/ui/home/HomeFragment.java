@@ -25,9 +25,8 @@ public class HomeFragment extends Fragment {
     Fragment fragment_calender;
     Fragment fragment_timeline;
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+    private void initialize(View view) {
         TabLayout tabs = view.findViewById(R.id.tab1);
 
         fragment_calender = new calender();
@@ -36,6 +35,7 @@ public class HomeFragment extends Fragment {
         tabs.addTab(tabs.newTab().setText("calender"));
         tabs.addTab(tabs.newTab().setText("timeline"));
 
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container2, fragment_calender).commit();
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
                 } else if (position == 1) {
                     selected = fragment_timeline;
                 }
-                getChildFragmentManager().beginTransaction().replace(R.id.container, selected).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container2, selected).commit();
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -58,9 +58,12 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // 기본 프래그먼트 설정
-        getChildFragmentManager().beginTransaction().add(R.id.container, fragment_calender).commit();
 
+    }
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        initialize(view);
         return view;
     }
 
