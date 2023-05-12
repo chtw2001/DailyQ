@@ -30,7 +30,9 @@ public class SettingsFragment extends Fragment {
         btnModifySettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 회원 정보 수정 기능 구현
+                Intent intent = new Intent(getActivity(), ModifySettings.class);
+                startActivity(intent);
+                //startActivity(new Intent(getApplicationContext(), ModifySettings.class));
             }
         });
 

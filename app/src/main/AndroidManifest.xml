@@ -12,6 +12,9 @@
         android:theme="@style/Theme.DailyQ"
         tools:targetApi="31">
         <activity
+            android:name=".ui.settings.ModifySettings"
+            android:exported="false" />
+        <activity
             android:name=".lower_bar_activity"
             android:exported="false"
             android:label="@string/title_activity_lower_bar" />
