@@ -18,22 +18,6 @@ import com.example.dailyq.ui.notifications.NotificationsFragment;
 import com.example.dailyq.ui.settings.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-
-import com.example.dailyq.ui.dashboard.DashboardFragment;
-import com.example.dailyq.ui.home.HomeFragment;
-import com.example.dailyq.ui.notifications.NotificationsFragment;
-import com.example.dailyq.ui.settings.SettingsFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.tabs.TabLayout;
-
-
 
 public class MainActivity extends AppCompatActivity {
     Button btnSetting;
@@ -50,47 +34,47 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnSetting = (Button) findViewById(R.id.btnSetting);
-        btnSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),Setting.class);
-                startActivity(intent);
-
+//        btnSetting = (Button) findViewById(R.id.btnSetting);
+//        btnSetting.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(),Setting.class);
+//                startActivity(intent);
+//
+//            }
+//        });
 
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayShowTitleEnabled(false);
-                fragment_dashboard = new DashboardFragment();
-                fragment_home = new HomeFragment();
-                fragment_notifications = new NotificationsFragment();
-                fragment_settings = new SettingsFragment();
+        fragment_dashboard = new DashboardFragment();
+        fragment_home = new HomeFragment();
+        fragment_notifications = new NotificationsFragment();
+        fragment_settings = new SettingsFragment();
 
-                fragment_calender = new calender();
-                fragment_timeline = new timeline();
+        fragment_calender = new calender();
+        fragment_timeline = new timeline();
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_home).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_home).commit();
 
-                BottomNavigationView bottomNav = findViewById(R.id.tab2);
-                bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.navigation_home:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_home).commit();
-                                break;
-                            case R.id.navigation_dashboard:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_dashboard).commit();
-                                break;
-                            case R.id.navigation_notifications:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_notifications).commit();
-                                break;
-                            case R.id.navigation_settings:
-                                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_settings).commit();
-                                break;
-                        }
-                        return true;
-                    }
-                });
+        BottomNavigationView bottomNav = findViewById(R.id.tab2);
+        bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_home).commit();
+                        break;
+                    case R.id.navigation_dashboard:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_dashboard).commit();
+                        break;
+                    case R.id.navigation_notifications:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_notifications).commit();
+                        break;
+                    case R.id.navigation_settings:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment_settings).commit();
+                        break;
+                }
+                return true;
             }
         });
     }
