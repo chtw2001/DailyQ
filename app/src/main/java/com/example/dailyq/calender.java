@@ -1,5 +1,6 @@
 package com.example.dailyq;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,12 @@ public class calender extends Fragment {
                 // Do something when a date is clicked
                 // You can access the year, month, and dayOfMonth parameters to get the selected date
                 Log.d("MainActivity", "Selected date: " + year + "/" + (month+1) + "/" + day);
+
+                Intent intent = new Intent(getActivity(), activity_write_an_answer.class);
+                intent.putExtra("year", year);
+                intent.putExtra("month", month+1);
+                intent.putExtra("day", day);
+                startActivity(intent);
             }
         });
     }
