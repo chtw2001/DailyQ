@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -33,11 +34,14 @@ public class activity_write_an_answer extends AppCompatActivity {
 //    private static String[][] calender;
     Button prev, next;
     TextView date;
-    String file, filename;
+    String file, filename, id;
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_an_answer);
+        id = "1";
+
 
         // 인텐트에서 넘어온 데이터 추출
         Intent intent = getIntent();
@@ -92,7 +96,7 @@ public class activity_write_an_answer extends AppCompatActivity {
         String diaryStr = null;
         FileInputStream inFs;
         try{
-            inFs = openFileInput(fName);
+            inFs = new FileInputStream(new File(getFilesDir()+"/"+id,fName));
             byte[] txt = new byte[1000];
             inFs.read(txt);
             inFs.close();
@@ -121,14 +125,14 @@ public class activity_write_an_answer extends AppCompatActivity {
                 break;
             case R.id.save:
                 try{
-                    FileOutputStream outFs = openFileOutput(filename, Context.MODE_PRIVATE);
+                    FileOutputStream outFs = new FileOutputStream(new File(getFilesDir()+"/"+id, filename));
                     String str = diary.getText().toString();
                     outFs.write(str.getBytes());
+                    outFs.flush();
                     outFs.close();
                     Toast.makeText(getApplicationContext(), "일기가 저장되었습니다", Toast.LENGTH_SHORT).show();
-
                 }catch(IOException e){
-
+                    Toast.makeText(getApplicationContext(), "tq", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.friend_answer:

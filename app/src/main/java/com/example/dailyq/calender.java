@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,6 +41,7 @@ public class calender extends Fragment implements OnDateSelectedListener {
     private MaterialCalendarView calendarView;
     private HashSet<CalendarDay> datesWithContent;
     private int dotColor = Color.RED;
+    String id = "1";
     private void initialize(View view) {
         calendarView = view.findViewById(R.id.calendarView);
         fragment_diary_detail = new fragment_diary_detail();
@@ -122,13 +124,17 @@ public class calender extends Fragment implements OnDateSelectedListener {
     }
 
     private void getAllDiaryDates() {
-        String[] fileList = getActivity().fileList();
+        String[] fileList = new File(getActivity().getFilesDir(),id).list();
 
         for (String fileName : fileList) {
             if (fileName.matches("\\d+_\\d+_\\d+")) {
                 try {
-                    InputStreamReader inputStreamReader = new InputStreamReader(getActivity().openFileInput(fileName));
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    //InputStreamReader inputStreamReader = new InputStreamReader(getActivity().openFileInput(fileName));
+                    //BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                    FileInputStream fis = new FileInputStream(new File(getActivity().getFilesDir() + File.separator + id, fileName));
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis));
+
                     String line = bufferedReader.readLine();
 
                     if (line != null && !line.isEmpty()) {

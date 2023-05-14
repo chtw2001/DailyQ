@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class timeline extends Fragment {
+    String id = "1";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timeline, container, false);
@@ -28,13 +31,13 @@ public class timeline extends Fragment {
 
     private List<DiaryEntry> getAllDiary() {
         List<DiaryEntry> diaryEntries = new ArrayList<>();
-        String[] fileList = getContext().fileList();
+        String[] fileList = new File(getActivity().getFilesDir(),id).list();
 
         for (String fileName : fileList) {
             if (fileName.matches("\\d+_\\d+_\\d+")) {
                 try {
-                    InputStreamReader inputStreamReader = new InputStreamReader(getActivity().openFileInput(fileName));
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    FileInputStream fis = new FileInputStream(new File(getActivity().getFilesDir() + File.separator + id, fileName));
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fis));
                     String contents = bufferedReader.readLine();
 
                     if (contents != null && !contents.isEmpty()) {

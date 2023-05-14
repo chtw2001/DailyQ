@@ -19,6 +19,8 @@ import com.example.dailyq.ui.settings.SettingsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity {
     Button btnSetting;
 
@@ -46,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayShowTitleEnabled(false);
+        File folder = new File(getFilesDir(),"1");
+        if (!folder.exists()) {
+            folder.mkdir(); //폴더 생성
+        }
+
         fragment_dashboard = new DashboardFragment();
         fragment_home = new HomeFragment();
         fragment_notifications = new NotificationsFragment();
