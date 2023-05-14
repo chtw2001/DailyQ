@@ -104,7 +104,8 @@ public class SettingsFragment extends Fragment {
         btnSetLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 언어 설정 기능 구현
+                Intent intent = new Intent(getActivity(), Language.class);
+                startActivity(intent);
             }
         });
     }

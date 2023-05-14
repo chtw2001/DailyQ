@@ -12,6 +12,9 @@
         android:theme="@style/Theme.DailyQ"
         tools:targetApi="31">
         <activity
+            android:name=".ui.settings.Language"
+            android:exported="false" />
+        <activity
             android:name=".activity_write_an_answer"
             android:exported="false" />
         <activity
