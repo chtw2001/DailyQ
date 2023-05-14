@@ -1,6 +1,7 @@
 package com.example.dailyq;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,32 +14,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashSet;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link calender#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class calender extends Fragment {
 
+public class calender extends Fragment implements OnDateSelectedListener {
     Fragment fragment_diary_detail;
     private void initialize(View view) {
-        CalendarView calendarView = view.findViewById(R.id.calendarView);
+        MaterialCalendarView calendarView = view.findViewById(R.id.calendarView);
         fragment_diary_detail = new fragment_diary_detail();
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int day) {
-                // Do something when a date is clicked
-                // You can access the year, month, and dayOfMonth parameters to get the selected date
-                Log.d("MainActivity", "Selected date: " + year + "/" + (month+1) + "/" + day);
-                // getChildFragmentManager().beginTransaction().replace(R.id.calendarView, fragment_diary_detail).commit();
+        calendarView.setOnDateChangedListener(this);
 
-                Intent intent = new Intent(getActivity(), activity_write_an_answer.class);
-                intent.putExtra("year", year);
-                intent.putExtra("month", month+1);
-                intent.putExtra("day", day);
-                startActivity(intent);
-            }
-        });
+
+    }
+    public Boolean readDiary(String fName) {
+        String diaryStr = null;
+        FileInputStream inFs;
+        try{
+            inFs = getActivity().openFileInput(fName);
+        }catch (IOException e){
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -47,5 +59,44 @@ public class calender extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_calender, container, false);
         initialize(view);
         return view;
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        int year = date.getYear();
+        int month = date.getMonth();
+        int day = date.getDay();
+        Intent intent = new Intent(getActivity(), activity_write_an_answer.class);
+        intent.putExtra("year", year);
+        intent.putExtra("month", month);
+        intent.putExtra("day", day);
+        startActivity(intent);
+        if (readDiary(Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day))){
+            HashSet<CalendarDay> dates = new HashSet<>();
+            dates.add(CalendarDay.from(year, month, day));
+            widget.addDecorator(new EventDecorator(Color.RED, dates));
+        }else{
+            widget.removeDecorators();
+        }
+    }
+    public class EventDecorator implements DayViewDecorator {
+
+        private final int color;
+        private final HashSet<CalendarDay> dates;
+
+        public EventDecorator(int color, Collection<CalendarDay> dates) {
+            this.color = color;
+            this.dates = new HashSet<>(dates);
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return dates.contains(day);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new DotSpan(5, color));
+        }
     }
 }

@@ -52,16 +52,6 @@ public class activity_write_an_answer extends AppCompatActivity {
 
         diary = (EditText) findViewById(R.id.diary);
 
-
-//        if (calender == null) {
-//            calender = new String[12][];
-//            for (int i = 0; i < calender.length; i++) {
-//                calender[i] = new String[dayonmonth[i]];
-//                for (int j = 0; j < calender[i].length; j++) {
-//                    calender[i][j] = "";
-//                }
-//            }
-//        }
         filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
         file = readDiary(filename);
         diary.setText(file);
