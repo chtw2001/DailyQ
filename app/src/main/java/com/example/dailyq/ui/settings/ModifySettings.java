@@ -4,6 +4,7 @@ package com.example.dailyq.ui.settings;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -88,10 +89,49 @@ public class ModifySettings extends AppCompatActivity {
                 dlg.setTitle("비밀번호 변경");
                 dlg.setPositiveButton("변경",null);
                 dlg.setNegativeButton("취소",null);
-                dlg.show();
 
+                final AlertDialog alertDialog = dlg.create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                        positiveButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String oldPassword = edit_old_password.getText().toString();
+                                String newPassword = edit_new_password.getText().toString();
+                                String confirmPassword = edit_password_confirm.getText().toString();
+
+                                if (!oldPassword.equals(user[1])) {
+                                    Toast.makeText(ModifySettings.this, "현재 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                                    edit_old_password.setText("");
+                                    return;
+                                }
+
+                                if (!newPassword.equals(confirmPassword)) {
+                                    Toast.makeText(ModifySettings.this, "새 비밀번호와 비밀번호 확인이 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                                    edit_password_confirm.setText("");
+                                    return;
+                                }
+
+                                if(newPassword.length()==0){
+                                    Toast.makeText(ModifySettings.this, "새 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+
+                                user[1] = newPassword;
+                                Toast.makeText(ModifySettings.this, "비밀번호가 변경되었습니다.", Toast.LENGTH_SHORT).show();
+                                alertDialog.dismiss();
+                            }
+                        });
+                    }
+                });
+
+                alertDialog.show();
             }
         });
+
+
     }
 
     // DatePickerDialog를 띄우는 메소드
@@ -120,7 +160,7 @@ public class ModifySettings extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        //startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     private void saveChanges() {
@@ -136,19 +176,4 @@ public class ModifySettings extends AppCompatActivity {
         Toast.makeText(this, "회원 정보가 수정되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK
-                && data != null && data.getData() != null) {
-            mImageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
-                mImagePreview.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
