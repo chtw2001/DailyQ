@@ -9,49 +9,61 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/btnModifySettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="회원 정보 수정" />
+            android:paddingVertical="15dp"
+            android:text="회원 정보 수정"
+            android:textAlignment="viewStart" />
 
         <Button
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="로그아웃" />
+            android:paddingVertical="15dp"
+            android:text="로그아웃"
+            android:textAlignment="viewStart" />
 
         <Button
             android:id="@+id/btnDeveloperInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="개발자 이메일" />
+            android:paddingVertical="15dp"
+            android:text="개발자 이메일"
+            android:textAlignment="viewStart" />
 
         <Button
             android:id="@+id/btnWithdrawMembership"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="회원 탈퇴" />
+            android:paddingVertical="15dp"
+            android:text="회원 탈퇴"
+            android:textAlignment="viewStart" />
 
         <Button
             android:id="@+id/btnDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="설명" />
+            android:paddingVertical="15dp"
+            android:text="설명"
+            android:textAlignment="viewStart" />
 
         <Button
             android:id="@+id/btnSetLanguage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="언어 설정" />
+            android:paddingVertical="15dp"
+            android:text="언어 설정"
+            android:textAlignment="viewStart" />
     </TableLayout>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.dailyq.ui.settings;
 
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,8 +11,10 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -20,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.dailyq.R;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 public class ModifySettings extends AppCompatActivity {
 
@@ -28,7 +32,7 @@ public class ModifySettings extends AppCompatActivity {
 
     private EditText mEditNickname;
     private EditText mEditPassword;
-    private EditText mEditBirthday;
+    private TextView mEditBirthday;
     private ImageView mImagePreview;
 
     private Uri mImageUri;
@@ -51,6 +55,14 @@ public class ModifySettings extends AppCompatActivity {
             }
         });
 
+        // 생년월일 변경 EditText를 클릭했을 때 DatePickerDialog를 띄워 날짜 선택하도록 함
+        mEditBirthday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
+
         Button buttonSaveChanges = findViewById(R.id.button_save_changes);
         buttonSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,11 +72,33 @@ public class ModifySettings extends AppCompatActivity {
         });
     }
 
+    // DatePickerDialog를 띄우는 메소드
+    private void showDatePickerDialog() {
+        // 현재 날짜를 기본값으로 설정
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // DatePickerDialog를 생성하고 리스너를 등록
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        // 선택한 날짜를 yyyy-MM-dd 형식으로 EditText에 설정
+                        mEditBirthday.setText(String.format("%d-%02d-%02d", year, month + 1, dayOfMonth));
+                    }
+                },
+                year, month, day);
+        // DatePickerDialog를 보여줌
+        datePickerDialog.show();
+    }
+
+
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        //startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
     private void saveChanges() {
@@ -72,14 +106,12 @@ public class ModifySettings extends AppCompatActivity {
         String password = mEditPassword.getText().toString();
         String birthday = mEditBirthday.getText().toString();
 
-        // 예시로 수정된 회원 정보를 로그로 출력합니다.
+        //확인용
         Log.d(TAG, "Nickname: " + nickname);
         Log.d(TAG, "Password: " + password);
         Log.d(TAG, "Birthday: " + birthday);
         Log.d(TAG, "Image URI: " + mImageUri);
 
-        // 수정된 회원 정보를 서버에 전송하는 코드를 작성합니다.
-        // ...
 
         Toast.makeText(this, "회원 정보가 수정되었습니다.", Toast.LENGTH_SHORT).show();
     }
