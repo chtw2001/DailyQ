@@ -14,6 +14,9 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
         <activity
+            android:name=".activity_friend_item_layout"
+            android:exported="false" />
+        <activity
             android:name=".ui.settings.Language"
             android:exported="false" />
         <activity
