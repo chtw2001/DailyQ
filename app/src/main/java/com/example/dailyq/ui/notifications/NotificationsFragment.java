@@ -1,6 +1,7 @@
 package com.example.dailyq.ui.notifications;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,12 +24,14 @@ import com.example.dailyq.databinding.FragmentNotificationsBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class NotificationsFragment extends Fragment {
 
     private ListView listViewNotifications;
     private List<String> notificationItems;
+    private List<Boolean> checks;
     private CustomAdapter notificationItemsAdapter;
 
     private void initialize(View view){
@@ -36,10 +39,12 @@ public class NotificationsFragment extends Fragment {
         listViewNotifications = view.findViewById(R.id.listview_notifications);
 
         notificationItems = new ArrayList<>();
-        notificationItems.add("Notification 1Notification 1Notification 1Notification 1Notification 1Notification 1Notification 1Notification 1Notification 1Notification 1Notification 1Notification 1Notification 1Notification 1");
-        notificationItems.add("Notification 2");
-        notificationItems.add("Notification 3");
-        notificationItemsAdapter = new CustomAdapter(getContext(),notificationItems);
+        notificationItems.add("알림1");
+        notificationItems.add("알림2");
+        notificationItems.add("알림3");
+        checks = new ArrayList<>();
+        checks.addAll(Collections.nCopies(notificationItems.size(), Boolean.FALSE));
+        notificationItemsAdapter = new CustomAdapter(getContext(),notificationItems,checks);
         listViewNotifications.setAdapter(notificationItemsAdapter);
 
     }
@@ -55,10 +60,12 @@ public class NotificationsFragment extends Fragment {
     protected class CustomAdapter extends BaseAdapter {
         private Context mContext;
         private List<String> mItems;
+        private List<Boolean> mchecks;
 
-        public CustomAdapter(Context context, List<String> items) {
+        public CustomAdapter(Context context, List<String> items, List<Boolean> checks) {
             mContext = context;
             mItems = items;
+            mchecks = checks;
         }
 
         @Override
@@ -91,11 +98,17 @@ public class NotificationsFragment extends Fragment {
             final String item = mItems.get(position);
             textView.setText(item);
 
+            if(checks.get(position)){
+                textView.setTextColor(Color.rgb(200,200,200));
+            }
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //클릭시 어디로 갈지 적기
                     Toast.makeText(getContext(),item+"을 누름",Toast.LENGTH_SHORT).show();
+                    checks.set(position,true);
+                    notifyDataSetChanged();
                 }
             });
             deleteButton.setOnClickListener(new View.OnClickListener() {
