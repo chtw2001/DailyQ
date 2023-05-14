@@ -19,8 +19,7 @@ import android.widget.CalendarView;
  * create an instance of this fragment.
  */
 public class calender extends Fragment {
-    private static final int[] day = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    private static String[][] calender;
+
     Fragment fragment_diary_detail;
     private void initialize(View view) {
         CalendarView calendarView = view.findViewById(R.id.calendarView);
@@ -31,9 +30,7 @@ public class calender extends Fragment {
                 // Do something when a date is clicked
                 // You can access the year, month, and dayOfMonth parameters to get the selected date
                 Log.d("MainActivity", "Selected date: " + year + "/" + (month+1) + "/" + day);
-                getChildFragmentManager().beginTransaction().replace(R.id.calendarView, fragment_diary_detail).commit();
-
-
+                // getChildFragmentManager().beginTransaction().replace(R.id.calendarView, fragment_diary_detail).commit();
 
                 Intent intent = new Intent(getActivity(), activity_write_an_answer.class);
                 intent.putExtra("year", year);
@@ -46,16 +43,7 @@ public class calender extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        if (calender == null) {
-            calender = new String[12][];
-            for (int i = 0; i < calender.length; i++) {
-                calender[i] = new String[day[i]];
-                for (int j = 0; j < calender[i].length; j++) {
-                    calender[i][j] = "";
-                }
-            }
-        }
+
         View view =  inflater.inflate(R.layout.fragment_calender, container, false);
         initialize(view);
         return view;

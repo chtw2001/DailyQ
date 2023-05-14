@@ -3,19 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:title="편집 모드"
-        android:id="@+id/menu_refresh"
+        android:id="@+id/edit_mode"
         android:icon="@drawable/ic_edit_white_24dp"
-        app:showAsAction="always"
-
-        />
+        app:showAsAction="always" />
     <item
-        android:title="보기 모드"
-        android:id="@+id/menu_search"
+        android:title="저장"
+        android:id="@+id/save"
         android:icon="@drawable/ic_description_white_24dp"
         app:showAsAction="always" />
     <item
         android:title="친구 답변"
-        android:id="@+id/menu_settings"
+        android:id="@+id/friend_answer"
         android:icon="@drawable/ic_group_white_24dp"
         app:showAsAction="always"/>
 </menu>
