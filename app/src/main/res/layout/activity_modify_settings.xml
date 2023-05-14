@@ -28,20 +28,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="비밀번호 변경"
-        android:textSize="18sp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"/>
-
-    <EditText
-        android:id="@+id/edit_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="생년월일 변경"
         android:textSize="18sp"
         android:layout_marginTop="16dp"
@@ -90,4 +76,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="저장"/>
+
+    <!--    걍 임시로 넣어놓은 버튼임-->
+    <Button
+        android:id="@+id/button_edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="비밀번호 수정"/>
 </LinearLayout>

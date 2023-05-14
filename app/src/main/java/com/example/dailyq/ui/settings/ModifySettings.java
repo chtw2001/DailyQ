@@ -2,6 +2,7 @@ package com.example.dailyq.ui.settings;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,7 +32,6 @@ public class ModifySettings extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private EditText mEditNickname;
-    private EditText mEditPassword;
     private TextView mEditBirthday;
     private ImageView mImagePreview;
 
@@ -43,9 +43,12 @@ public class ModifySettings extends AppCompatActivity {
         setContentView(R.layout.activity_modify_settings);
 
         mEditNickname = findViewById(R.id.edit_nickname);
-        mEditPassword = findViewById(R.id.edit_password);
         mEditBirthday = findViewById(R.id.edit_birthday);
         mImagePreview = findViewById(R.id.image_preview);
+        String user[] = {"username","password","2000-01-01"};
+        mEditNickname.setText(user[0]);
+        mEditBirthday.setText(user[2]);
+
 
         Button buttonSelectImage = findViewById(R.id.button_select_image);
         buttonSelectImage.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +71,25 @@ public class ModifySettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveChanges();
+            }
+        });
+
+        Button button_edit_password = (Button) findViewById(R.id.button_edit_password);
+        button_edit_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                View dialogView = (View) View.inflate(ModifySettings.this,R.layout.edit_password,null);
+                EditText edit_old_password = (EditText) dialogView.findViewById(R.id.edit_old_password);
+                EditText edit_new_password = (EditText) dialogView.findViewById(R.id.edit_new_password);
+                EditText edit_password_confirm = (EditText) dialogView.findViewById(R.id.edit_password_confirm);
+
+                AlertDialog.Builder dlg = new AlertDialog.Builder(ModifySettings.this);
+                dlg.setView(dialogView);
+                dlg.setTitle("비밀번호 변경");
+                dlg.setPositiveButton("변경",null);
+                dlg.setNegativeButton("취소",null);
+                dlg.show();
+
             }
         });
     }
@@ -103,12 +125,10 @@ public class ModifySettings extends AppCompatActivity {
 
     private void saveChanges() {
         String nickname = mEditNickname.getText().toString();
-        String password = mEditPassword.getText().toString();
         String birthday = mEditBirthday.getText().toString();
 
         //확인용
         Log.d(TAG, "Nickname: " + nickname);
-        Log.d(TAG, "Password: " + password);
         Log.d(TAG, "Birthday: " + birthday);
         Log.d(TAG, "Image URI: " + mImageUri);
 
