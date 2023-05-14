@@ -120,6 +120,7 @@ public class calender extends Fragment implements OnDateSelectedListener {
             view.addSpan(new DotSpan(5, color));
         }
     }
+
     private void getAllDiaryDates() {
         String[] fileList = getActivity().fileList();
 
@@ -144,4 +145,5 @@ public class calender extends Fragment implements OnDateSelectedListener {
             }
         }
     }
+
 }
