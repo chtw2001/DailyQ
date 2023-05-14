@@ -15,9 +15,6 @@
             android:name=".activity_write_an_answer"
             android:exported="false" />
         <activity
-            android:name=".write_an_answer"
-            android:exported="false" />
-        <activity
             android:name=".ui.settings.ModifySettings"
             android:exported="false" />
         <activity
