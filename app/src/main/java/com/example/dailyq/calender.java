@@ -14,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,11 +37,14 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 public class calender extends Fragment implements OnDateSelectedListener {
     Fragment fragment_diary_detail;
+    private MaterialCalendarView calendarView;
+    private HashSet<CalendarDay> datesWithContent;
+    private int dotColor = Color.RED;
     private void initialize(View view) {
-        MaterialCalendarView calendarView = view.findViewById(R.id.calendarView);
+        calendarView = view.findViewById(R.id.calendarView);
         fragment_diary_detail = new fragment_diary_detail();
         calendarView.setOnDateChangedListener(this);
-
+        datesWithContent = new HashSet<>(); // Initialize the set
 
     }
     public Boolean readDiary(String fName) {
@@ -47,7 +52,14 @@ public class calender extends Fragment implements OnDateSelectedListener {
         FileInputStream inFs;
         try{
             inFs = getActivity().openFileInput(fName);
+            byte[] txt = new byte[1000];
+            inFs.read(txt);
+            inFs.close();
+            diaryStr = (new String(txt)).trim();
         }catch (IOException e){
+            return false;
+        }
+        if (diaryStr.length() == 0){
             return false;
         }
         return true;
@@ -55,12 +67,23 @@ public class calender extends Fragment implements OnDateSelectedListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view =  inflater.inflate(R.layout.fragment_calender, container, false);
         initialize(view);
+        getAllDiaryDates();
+        updateRedDots();
         return view;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        datesWithContent.clear(); // 이전에 추가된 모든 레드 닷을 제거합니다.
+        getAllDiaryDates();
+        updateRedDots();
+    }
+    private void updateRedDots() {
+        calendarView.removeDecorators();
+        calendarView.addDecorator(new EventDecorator(dotColor, datesWithContent));
+    }
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         int year = date.getYear();
@@ -72,11 +95,9 @@ public class calender extends Fragment implements OnDateSelectedListener {
         intent.putExtra("day", day);
         startActivity(intent);
         if (readDiary(Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day))){
-            HashSet<CalendarDay> dates = new HashSet<>();
-            dates.add(CalendarDay.from(year, month, day));
-            widget.addDecorator(new EventDecorator(Color.RED, dates));
+            datesWithContent.add(CalendarDay.from(year, month, day));
         }else{
-            widget.removeDecorators();
+            updateRedDots();
         }
     }
     public class EventDecorator implements DayViewDecorator {
@@ -97,6 +118,30 @@ public class calender extends Fragment implements OnDateSelectedListener {
         @Override
         public void decorate(DayViewFacade view) {
             view.addSpan(new DotSpan(5, color));
+        }
+    }
+    private void getAllDiaryDates() {
+        String[] fileList = getActivity().fileList();
+
+        for (String fileName : fileList) {
+            if (fileName.matches("\\d+_\\d+_\\d+")) {
+                try {
+                    InputStreamReader inputStreamReader = new InputStreamReader(getActivity().openFileInput(fileName));
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    String line = bufferedReader.readLine();
+
+                    if (line != null && !line.isEmpty()) {
+                        String[] parts = fileName.split("_");
+                        int year = Integer.parseInt(parts[0]);
+                        int month = Integer.parseInt(parts[1]);
+                        int day = Integer.parseInt(parts[2]);
+
+                        datesWithContent.add(CalendarDay.from(year, month, day));
+                    }
+                } catch (IOException e) {
+                    Log.e("calendar", "File read error: " + fileName, e);
+                }
+            }
         }
     }
 }
