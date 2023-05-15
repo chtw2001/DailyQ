@@ -28,7 +28,6 @@ public class friend_timeline extends AppCompatActivity implements TimelineAdapte
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         id = String.valueOf(intent.getStringExtra("id"));
-        System.out.println(id + "123123");
         setContentView(R.layout.fragment_timeline);
         setupTimeline();
 
@@ -69,7 +68,11 @@ public class friend_timeline extends AppCompatActivity implements TimelineAdapte
 
     private void setupTimeline() {
         List<DiaryEntry> diaryEntries = getAllDiary();
+        if (diaryEntries == null) {
+            return;
+        }
         Collections.sort(diaryEntries);
+
 
         RecyclerView recyclerView = findViewById(R.id.timelineRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
