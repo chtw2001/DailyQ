@@ -137,6 +137,11 @@ public class activity_write_an_answer extends AppCompatActivity {
                 break;
             case R.id.friend_answer:
                 Toast.makeText(this, "친구의 답변으로.", Toast.LENGTH_SHORT).show();
+
+                //답변한 친구 이름이 나열된 액티비티로 이동. 친구 리스트만 화면을 꽉 채움
+                Intent intent  = new Intent(activity_write_an_answer.this, friend_answer_list.class);
+                startActivity(intent);
+
                 break;
         }
         return super.onOptionsItemSelected(item);

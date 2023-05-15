@@ -123,7 +123,6 @@ public class DashboardFragment extends Fragment {
                         System.out.println("tttttttttttttttttttt");
                         System.out.println("tt33333333333333ttttttt");
                         System.out.println("타임라인 만들어지면 달아주면 됨");
-
                     }
                 });
             }
