@@ -40,7 +40,6 @@ public class friend_answer_list extends AppCompatActivity {
         data.add("test 1");
         data.add("test 2");
         data.add("test 3");
-        // 필요한 데이터 소스를 가져와서 data 리스트에 추가합니다.
         return data;
     }
 

@@ -36,13 +36,9 @@ public class DashboardFragment extends Fragment {
     private FragmentDashboardsBinding binding;
     private Button friendAddButton;
     private ArrayList<String> friendData = new ArrayList<>();
-    public ArrayList<String> getFriendData() {
-        return friendData;
-    }
     private FriendListAdapter friendListAdapter;
 
     RelativeLayout relativeLayout;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

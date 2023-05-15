@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,18 +25,22 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class activity_write_an_answer extends AppCompatActivity {
 
     ActionBar aBar;
     int year, month, day;
-    EditText diary;
+    EditText diary, diary_write;
 
     int[] dayonmonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 //    private static String[][] calender;
     Button prev, next;
-    TextView date;
-    String file, filename, id;
+    TextView date, question_text;
+    String file, filename, id, file_write, filename_write;
+
+    String[] question = {"가장 가고 싶은 여행지는 어디인가요?", "어제 잠들기 직전에 한 일을 적어주세요.", "당신의 낭만은 어떤 모습이었나요?", "당신은 무엇을 떠올리면 행복하다고 느끼나요?", "지금 이루어졌으면 하는 소원을 한 가지 적어주세요.", "지금 이루어졌으면 하는 소원을 한 가지 적어주세요."
+            , "나를 가장 잘 표현할 수 있는 한 마디가 있을까요?", "실패를 경험해본 적이 있나요?", };
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -54,11 +60,19 @@ public class activity_write_an_answer extends AppCompatActivity {
         date = (TextView) findViewById(R.id.date);
         date.setText(year + "/" + month + "/" + day);
 
+        diary_write = (EditText) findViewById(R.id.diary_write);
         diary = (EditText) findViewById(R.id.diary);
+        question_text = (TextView) findViewById(R.id.question_text);
+
+        filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
+        file_write = readDiary(filename_write);
+        diary_write.setText(file_write);
 
         filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
         file = readDiary(filename);
         diary.setText(file);
+
+        question_text.setText(question[0]);
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,9 +83,17 @@ public class activity_write_an_answer extends AppCompatActivity {
                     day -= 1;
                 }
                 date.setText(year + "/" + month + "/" + day);
+                //질문에 답하기 영역
+                filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
+                file_write = readDiary(filename_write);
+                diary_write.setText(file_write);
+
+                //일기 영역
                 filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
                 file = readDiary(filename);
                 diary.setText(file);
+
+
             }
         });
         next.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +106,12 @@ public class activity_write_an_answer extends AppCompatActivity {
                     day += 1;
                 }
                 date.setText(year + "/" + month + "/" + day);
+
+                //질문에 답하기 영역
+                filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
+                file_write = readDiary(filename_write);
+                diary_write.setText(file_write);
+
                 filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
                 file = readDiary(filename);
                 diary.setText(file);
@@ -102,7 +130,7 @@ public class activity_write_an_answer extends AppCompatActivity {
             inFs.close();
             diaryStr = (new String(txt)).trim();
         }catch (IOException e){
-            diary.setHint("오늘의 질문 : ");
+
         }
         return diaryStr;
     }
@@ -125,12 +153,23 @@ public class activity_write_an_answer extends AppCompatActivity {
                 break;
             case R.id.save:
                 try{
+
+                    //질문 답변
+                    FileOutputStream outFs_write = new FileOutputStream(new File(getFilesDir()+"/"+id, filename_write));
+                    String str_write = diary_write.getText().toString();
+                    outFs_write.write(str_write.getBytes());
+                    outFs_write.flush();
+                    outFs_write.close();
+
+                    //일기
                     FileOutputStream outFs = new FileOutputStream(new File(getFilesDir()+"/"+id, filename));
                     String str = diary.getText().toString();
                     outFs.write(str.getBytes());
                     outFs.flush();
                     outFs.close();
-                    Toast.makeText(getApplicationContext(), "일기가 저장되었습니다", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(), "저장되었습니다", Toast.LENGTH_SHORT).show();
+
                 }catch(IOException e){
                     Toast.makeText(getApplicationContext(), "tq", Toast.LENGTH_SHORT).show();
                 }
