@@ -1,6 +1,7 @@
 package com.example.dailyq;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +26,21 @@ public class friend_answer_list extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_answer_list);
-
+        setContentView(R.layout.activity_friend_answer_combine);
+        friend_answer_list_name = findViewById(R.id.friend_answer_list_name);
         friend_answer_list_View = findViewById(R.id.friend_answer_list_View);
         adapter = new friend_answer_Adapter(this,  getData());
         friend_answer_list_View.setAdapter(adapter);
 
+//        friend_answer_list_name.setOnClickListener(new View.OnClickListener() { 잘못 만듬
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(friend_answer_list.this, friend_timeline.class);
+//                //intent.putExtra("id", null);            null에 친구 id 넣어야함
+//
+//                startActivity(intent);
+//            }
+//        });
         //friend_answer_list_name = findViewById(R.id.friend_answer_list_name);
 
     }

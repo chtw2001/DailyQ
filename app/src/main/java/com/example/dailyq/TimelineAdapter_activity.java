@@ -1,6 +1,5 @@
 package com.example.dailyq;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,20 +7,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHolder> {
+public class TimelineAdapter_activity extends RecyclerView.Adapter<TimelineAdapter_activity.ViewHolder> {
     private List<DiaryEntry> diaryEntries;
-    private timeline fragment;
+    private TimelineAdapter.OnDateSelectedListener listener;
 
-
-    public TimelineAdapter(timeline fragment, List<DiaryEntry> diaryEntries) {
-        this.fragment = fragment;
+    public TimelineAdapter_activity(Context context, List<DiaryEntry> diaryEntries, TimelineAdapter.OnDateSelectedListener listener) {
         this.diaryEntries = diaryEntries;
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,7 +37,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
         holder.itemView.setOnClickListener(view -> {
             Calendar calendar = diaryEntry.getCalendar();
             CalendarDay date = CalendarDay.from(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            fragment.onDateSelected(date);
+            listener.onDateSelected(date);
         });
     }
 
@@ -59,8 +56,4 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             contentTextView = itemView.findViewById(R.id.contentTextView);
         }
     }
-    public interface OnDateSelectedListener {
-        void onDateSelected(CalendarDay date);
-    }
-
 }

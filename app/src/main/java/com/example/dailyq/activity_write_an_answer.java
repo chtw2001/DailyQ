@@ -135,8 +135,6 @@ public class activity_write_an_answer extends AppCompatActivity {
         return diaryStr;
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.write_menu, menu);

@@ -3,7 +3,7 @@ package com.example.dailyq.ui.dashboard;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dailyq.MainActivity;
 import com.example.dailyq.R;
 import com.example.dailyq.databinding.FragmentDashboardsBinding;
+import com.example.dailyq.friend_timeline;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,10 +36,14 @@ public class DashboardFragment extends Fragment {
 
     private FragmentDashboardsBinding binding;
     private Button friendAddButton;
-    private ArrayList<String> friendData = new ArrayList<>();
+    private ArrayList<User> friendData = new ArrayList<>();
     private FriendListAdapter friendListAdapter;
+    TextView user_id;
+    int id;
+    int i = 1;
 
     RelativeLayout relativeLayout;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,11 +70,14 @@ public class DashboardFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String text = input.getText().toString();
                         if (!text.isEmpty()) {
-                            friendData.add(text); // EditText에 입력된 텍스트를 리스트뷰에 추가
+                            id = i;
+                            friendData.add(new User(text, i));; // EditText에 입력된 텍스트를 리스트뷰에 추가
+
+                            i++;
                             friendListAdapter.notifyDataSetChanged();
 
                             //값 들어갔는지 보기
-                            for(String friend : friendData) {
+                            for(User friend : friendData) {
                                 System.out.println(friend);
                             }
 
@@ -86,11 +94,12 @@ public class DashboardFragment extends Fragment {
         return root;
     }
 
-    public class FriendListAdapter extends ArrayAdapter<String> {
-        private final Context context;
-        private final ArrayList<String> friendData;
+    public class FriendListAdapter extends ArrayAdapter<User> {
 
-        public FriendListAdapter(Context context, int resource, ArrayList<String> friendData) {
+        private final Context context;
+        private final ArrayList<User> friendData;
+
+        public FriendListAdapter(Context context, int resource, ArrayList<User> friendData) {
             super(context, resource, friendData);
             this.context = context;
             this.friendData = friendData;
@@ -109,6 +118,9 @@ public class DashboardFragment extends Fragment {
             TextView nameTextView = convertView.findViewById(R.id.name_text_view);
             nameTextView.setText(null);
 
+            TextView idTextView = convertView.findViewById(R.id.user_id);
+            idTextView.setText(null);
+
             Button deleteButton = convertView.findViewById(R.id.delete_button);
             deleteButton.setOnClickListener(null);
 
@@ -117,23 +129,24 @@ public class DashboardFragment extends Fragment {
             relativeLayout = convertView.findViewById(R.id.friend_list_itme);
             // null 체크 후 이벤트 리스너 등록
             if (relativeLayout != null) {
-                relativeLayout.setOnClickListener(new View.OnClickListener() {
+                nameTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         TextView nameTextView = finalConvertView.findViewById(R.id.name_text_view);
                         String name = nameTextView.getText().toString();
 
-                        System.out.println("tttttttttttttttttttt");
-                        System.out.println("선택한 친구 이름 : "+name);
-                        System.out.println("타임라인 만들어지면 달아주면 됨");
+                        Intent intent = new Intent(getActivity(), friend_timeline.class);
+                        System.out.println(idTextView.getText().toString());
+                        intent.putExtra("id", idTextView.getText().toString());
+                        startActivity(intent);
                     }
                 });
             }
 
+            User user = friendData.get(position);
+            nameTextView.setText(user.getName());
+            idTextView.setText(String.valueOf(user.getId()));
 
-
-            nameTextView.setText(friendData.get(position));
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -142,10 +155,33 @@ public class DashboardFragment extends Fragment {
                     notifyDataSetChanged();
                 }
             });
-
             return convertView;
         }
     }
+
+
+    public class User {
+        private String name;
+        private int id;
+
+        public User(String name, int id) {
+            this.name = name;
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+    }
+
 
     @Override
     public void onDestroyView() {

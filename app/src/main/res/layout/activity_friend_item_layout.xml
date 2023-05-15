@@ -5,7 +5,11 @@
     android:layout_height="50dp"
     android:id="@+id/friend_list_itme"
  >
-
+    <TextView
+        android:id="@+id/user_id"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:text="id"/>
     <!-- 이름 -->
     <TextView
         android:id="@+id/name_text_view"

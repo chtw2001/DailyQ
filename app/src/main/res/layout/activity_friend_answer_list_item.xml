@@ -8,6 +8,7 @@
 
 
     <!-- 이름 -->
+
     <TextView
         android:id="@+id/friend_answer_list_name"
         android:layout_width="wrap_content"
