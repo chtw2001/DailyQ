@@ -36,6 +36,9 @@ public class DashboardFragment extends Fragment {
     private FragmentDashboardsBinding binding;
     private Button friendAddButton;
     private ArrayList<String> friendData = new ArrayList<>();
+    public ArrayList<String> getFriendData() {
+        return friendData;
+    }
     private FriendListAdapter friendListAdapter;
 
     RelativeLayout relativeLayout;
@@ -113,6 +116,7 @@ public class DashboardFragment extends Fragment {
             Button deleteButton = convertView.findViewById(R.id.delete_button);
             deleteButton.setOnClickListener(null);
 
+            final View finalConvertView = convertView;
 
             relativeLayout = convertView.findViewById(R.id.friend_list_itme);
             // null 체크 후 이벤트 리스너 등록
@@ -120,8 +124,12 @@ public class DashboardFragment extends Fragment {
                 relativeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        TextView nameTextView = finalConvertView.findViewById(R.id.name_text_view);
+                        String name = nameTextView.getText().toString();
+
                         System.out.println("tttttttttttttttttttt");
-                        System.out.println("tt33333333333333ttttttt");
+                        System.out.println("선택한 친구 이름 : "+name);
                         System.out.println("타임라인 만들어지면 달아주면 됨");
                     }
                 });

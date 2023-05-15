@@ -31,15 +31,15 @@ public class friend_answer_list extends AppCompatActivity {
         adapter = new friend_answer_Adapter(this,  getData());
         friend_answer_list_View.setAdapter(adapter);
 
-//        friend_answer_list_name = findViewById(R.id.friend_answer_list_name);
+        //friend_answer_list_name = findViewById(R.id.friend_answer_list_name);
 
     }
 
     private List<String> getData() {
         List<String> data = new ArrayList<>();
-        data.add("Item 1");
-        data.add("Item 2");
-        data.add("Item 3");
+        data.add("test 1");
+        data.add("test 2");
+        data.add("test 3");
         // 필요한 데이터 소스를 가져와서 data 리스트에 추가합니다.
         return data;
     }
