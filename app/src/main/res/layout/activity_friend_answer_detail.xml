@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/friend_answer_detail_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:paddingLeft="15dp"
+        android:text="친구 이름" />
+
+    <TextView
+        android:id="@+id/friend_answer_detail_Q"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:textSize="20dp"
+        android:paddingLeft="15dp"
+        android:text="친구가 작성한 질문 답변" />
+
+    <TextView
+        android:id="@+id/friend_answer_detail_D"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:textSize="20dp"
+        android:paddingLeft="15dp"
+        android:text="친구가 작성한 일기가 없습니다." />
+</LinearLayout>

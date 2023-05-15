@@ -89,13 +89,21 @@ public class friend_answer_list extends AppCompatActivity {
             TextView itemTextView = convertView.findViewById(R.id.friend_answer_list_name);
             itemTextView.setText(data.get(position));
 
+            final View finalConvertView = convertView; // final 변수로 선언
             relativeLayout = convertView.findViewById(R.id.friend_ansewr_list_itme_Layout);
             // null 체크 후 이벤트 리스너 등록
             if (relativeLayout != null) {
                 relativeLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        System.out.println("친구 답변 상세로 이동");
+                        TextView nameTextView = finalConvertView.findViewById(R.id.friend_answer_list_name);
+                        String name = nameTextView.getText().toString();
+                        System.out.println( "ssssssssssssssssssssssss"+name);
+
+                        //친구의 답변 보기
+                        Intent intent  = new Intent(friend_answer_list.this, friend_answer_detail.class);
+                        intent.putExtra("name", name); // 데이터 추가
+                        startActivity(intent);
                     }
                 });
             }
