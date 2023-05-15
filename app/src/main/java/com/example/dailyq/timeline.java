@@ -1,5 +1,6 @@
 package com.example.dailyq;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import android.content.Context;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
@@ -74,6 +78,12 @@ public class timeline extends Fragment {
     }
 
     public void onDateSelected(CalendarDay date) {
-        System.out.println(date); // 여기서 날짜 받으면 해당 날짜꺼 수정하는 액티비티로 전환 (캘린더에서 날짜 누르면 들어가는 페이지랑 동일)
+        Context context = getContext();
+        Intent intent = new Intent(context, activity_write_an_answer.class);
+        intent.putExtra("year", date.getYear());
+        intent.putExtra("month", date.getMonth());
+        intent.putExtra("day", date.getDay());
+        startActivity(intent);
+
     }
 }
