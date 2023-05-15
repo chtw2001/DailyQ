@@ -31,7 +31,7 @@ public class activity_write_an_answer extends AppCompatActivity {
 
     ActionBar aBar;
     int year, month, day;
-    EditText diary, diary_write;
+    EditText diary, question_diary;
 
     int[] dayonmonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 //    private static String[][] calender;
@@ -60,13 +60,13 @@ public class activity_write_an_answer extends AppCompatActivity {
         date = (TextView) findViewById(R.id.date);
         date.setText(year + "/" + month + "/" + day);
 
-        diary_write = (EditText) findViewById(R.id.diary_write);
+        question_diary = (EditText) findViewById(R.id.question_diary);
         diary = (EditText) findViewById(R.id.diary);
         question_text = (TextView) findViewById(R.id.question_text);
 
         filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
         file_write = readDiary(filename_write);
-        diary_write.setText(file_write);
+        question_diary.setText(file_write);
 
         filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
         file = readDiary(filename);
@@ -86,7 +86,7 @@ public class activity_write_an_answer extends AppCompatActivity {
                 //질문에 답하기 영역
                 filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
                 file_write = readDiary(filename_write);
-                diary_write.setText(file_write);
+                question_diary.setText(file_write);
 
                 //일기 영역
                 filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
@@ -110,7 +110,7 @@ public class activity_write_an_answer extends AppCompatActivity {
                 //질문에 답하기 영역
                 filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
                 file_write = readDiary(filename_write);
-                diary_write.setText(file_write);
+                question_diary.setText(file_write);
 
                 filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
                 file = readDiary(filename);
@@ -154,7 +154,7 @@ public class activity_write_an_answer extends AppCompatActivity {
 
                     //질문 답변
                     FileOutputStream outFs_write = new FileOutputStream(new File(getFilesDir()+"/"+id, filename_write));
-                    String str_write = diary_write.getText().toString();
+                    String str_write = question_diary.getText().toString();
                     outFs_write.write(str_write.getBytes());
                     outFs_write.flush();
                     outFs_write.close();
@@ -169,7 +169,7 @@ public class activity_write_an_answer extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "저장되었습니다", Toast.LENGTH_SHORT).show();
 
                 }catch(IOException e){
-                    Toast.makeText(getApplicationContext(), "tq", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "오류입니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.friend_answer:

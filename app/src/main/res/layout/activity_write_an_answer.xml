@@ -39,33 +39,35 @@
             android:textSize="25dp"
             android:layout_gravity="end" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >   <!--여기서 날짜 나타냄-->
-    <TextView
-        android:id="@+id/question_text"
-        android:text="오늘의 질문"
-        android:paddingLeft="20dp"
-        android:textSize="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:gravity="left" />
+        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/previous_answer"
+        <TextView
+            android:id="@+id/question_text"
+            android:text="오늘의 질문"
+            android:paddingLeft="20dp"
+            android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="이전 답변"
-            android:textColor="#FFFFFF" />
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="left" />
+
+            <Button
+                android:id="@+id/previous_answer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="이전 답변"
+                android:textColor="#FFFFFF" />
 
     </LinearLayout>
+
     <!-- TODO: Update blank fragment layout -->
     <EditText
-        android:id="@+id/diary_write"
+        android:id="@+id/question_diary"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:hint="답변을 남기세요" />

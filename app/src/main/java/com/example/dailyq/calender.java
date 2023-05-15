@@ -78,7 +78,7 @@ public class calender extends Fragment implements OnDateSelectedListener {
     @Override
     public void onResume() {
         super.onResume();
-        datesWithContent.clear(); // 이전에 추가된 모든 레드 닷을 제거합니다.
+        datesWithContent.clear();
         getAllDiaryDates();
         updateRedDots();
     }
