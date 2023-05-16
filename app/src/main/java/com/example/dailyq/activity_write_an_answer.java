@@ -30,7 +30,7 @@ import java.util.List;
 public class activity_write_an_answer extends AppCompatActivity {
 
     ActionBar aBar;
-    int year, month, day;
+    public int year, month, day;
     EditText diary, question_diary;
 
     int[] dayonmonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -213,6 +213,9 @@ public class activity_write_an_answer extends AppCompatActivity {
 
                 //답변한 친구 이름이 나열된 액티비티로 이동. 친구 리스트만 화면을 꽉 채움
                 Intent intent  = new Intent(activity_write_an_answer.this, friend_answer_list.class);
+                intent.putExtra("year", year);
+                intent.putExtra("month", month);
+                intent.putExtra("day", day);
                 startActivity(intent);
 
                 break;

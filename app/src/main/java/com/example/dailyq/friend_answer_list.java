@@ -22,26 +22,22 @@ public class friend_answer_list extends AppCompatActivity {
     ListView friend_answer_list_View;
     friend_answer_Adapter adapter;
     RelativeLayout relativeLayout;
+    public int year, month, day;
+    public String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_answer_combine);
+        Intent intent = getIntent();
+        year = intent.getIntExtra("year", 0);
+        month = intent.getIntExtra("month", 0);
+        day = intent.getIntExtra("day", 0);
+
         friend_answer_list_name = findViewById(R.id.friend_answer_list_name);
         friend_answer_list_View = findViewById(R.id.friend_answer_list_View);
         adapter = new friend_answer_Adapter(this,  getData());
         friend_answer_list_View.setAdapter(adapter);
-
-//        friend_answer_list_name.setOnClickListener(new View.OnClickListener() { 잘못 만듬
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(friend_answer_list.this, friend_timeline.class);
-//                //intent.putExtra("id", null);            null에 친구 id 넣어야함
-//
-//                startActivity(intent);
-//            }
-//        });
-        //friend_answer_list_name = findViewById(R.id.friend_answer_list_name);
 
     }
 
@@ -103,6 +99,10 @@ public class friend_answer_list extends AppCompatActivity {
                         //친구의 답변 보기
                         Intent intent  = new Intent(friend_answer_list.this, friend_answer_detail.class);
                         intent.putExtra("name", name); // 데이터 추가
+                        intent.putExtra("year", year);
+                        intent.putExtra("month", month);
+                        intent.putExtra("day", day);
+                        // intent.putExtra("id", id); //id 친구의 id값도 넣어주어야함
                         startActivity(intent);
                     }
                 });

@@ -12,4 +12,8 @@
         android:id="@+id/activity_friend_answer_list"
         layout="@layout/activity_friend_answer_list" />
 
+    <include
+        android:id="@+id/activity_friend_item_layout"
+        layout="@layout/activity_friend_item_layout" />
+
 </LinearLayout>
