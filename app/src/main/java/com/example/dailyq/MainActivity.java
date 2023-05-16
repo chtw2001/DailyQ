@@ -48,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayShowTitleEnabled(false);
+
+        //질문 데이터 추가. 앱 빌드 시 처음 한 번만 실행
+        question_date.initialize(getApplicationContext());
+        
         File folder = new File(getFilesDir(),"1");
         if (!folder.exists()) {
             folder.mkdir(); //폴더 생성

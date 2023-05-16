@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Random;
 
 public class activity_write_an_answer extends AppCompatActivity {
 
@@ -40,9 +41,7 @@ public class activity_write_an_answer extends AppCompatActivity {
     TextView date, question_text;
     String file, filename, id, file_write, filename_write;
     boolean isEditMode;
-
-    String[] question = {"가장 가고 싶은 여행지는 어디인가요?", "어제 잠들기 직전에 한 일을 적어주세요.", "당신의 낭만은 어떤 모습이었나요?", "당신은 무엇을 떠올리면 행복하다고 느끼나요?", "지금 이루어졌으면 하는 소원을 한 가지 적어주세요.", "지금 이루어졌으면 하는 소원을 한 가지 적어주세요."
-            , "나를 가장 잘 표현할 수 있는 한 마디가 있을까요?", "실패를 경험해본 적이 있나요?", };
+    int randomNumber;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,9 @@ public class activity_write_an_answer extends AppCompatActivity {
         file = readDiary(filename);
         diary.setText(file);
 
-        question_text.setText(question[0]);
+        Random random = new Random();
+        randomNumber = random.nextInt(100) + 1;
+        question_text.setText(question_date.readData(this, randomNumber));
 
         isEditMode = true; //편집모드 아이콘 Visible 초기값
         prev.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +89,11 @@ public class activity_write_an_answer extends AppCompatActivity {
                     day -= 1;
                 }
                 date.setText(year + "/" + month + "/" + day);
+
+                Random random = new Random();
+                randomNumber = random.nextInt(100) + 1;
+                Context context = v.getContext();
+                question_text.setText(question_date.readData(context, randomNumber));
 
                 //질문에 답하기 영역
                 filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
@@ -111,6 +117,11 @@ public class activity_write_an_answer extends AppCompatActivity {
                     day += 1;
                 }
                 date.setText(year + "/" + month + "/" + day);
+
+                Random random = new Random();
+                randomNumber = random.nextInt(100) + 1;
+                Context context = v.getContext();
+                question_text.setText(question_date.readData(context, randomNumber));
 
                 //질문에 답하기 영역
                 filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
