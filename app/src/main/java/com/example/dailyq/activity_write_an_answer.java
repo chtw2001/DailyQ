@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -34,10 +35,11 @@ public class activity_write_an_answer extends AppCompatActivity {
     EditText diary, question_diary;
 
     int[] dayonmonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-//    private static String[][] calender;
+    //    private static String[][] calender;
     Button prev, next;
     TextView date, question_text;
     String file, filename, id, file_write, filename_write;
+    boolean isEditMode;
 
     String[] question = {"가장 가고 싶은 여행지는 어디인가요?", "어제 잠들기 직전에 한 일을 적어주세요.", "당신의 낭만은 어떤 모습이었나요?", "당신은 무엇을 떠올리면 행복하다고 느끼나요?", "지금 이루어졌으면 하는 소원을 한 가지 적어주세요.", "지금 이루어졌으면 하는 소원을 한 가지 적어주세요."
             , "나를 가장 잘 표현할 수 있는 한 마디가 있을까요?", "실패를 경험해본 적이 있나요?", };
@@ -74,6 +76,8 @@ public class activity_write_an_answer extends AppCompatActivity {
         diary.setText(file);
 
         question_text.setText(question[0]);
+
+        isEditMode = true; //편집모드 아이콘 Visible 초기값
         prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,16 +88,16 @@ public class activity_write_an_answer extends AppCompatActivity {
                     day -= 1;
                 }
                 date.setText(year + "/" + month + "/" + day);
-                //질문에 답하기 영역
-                filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
-                file_write = readDiary(filename_write);
-                question_diary.setText(file_write);
 
-                //일기 영역
+                //질문에 답하기 영역
                 filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
                 file = readDiary(filename);
                 diary.setText(file);
 
+                //일기 영역
+                filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
+                file_write = readDiary(filename_write);
+                question_diary.setText(file_write);
 
             }
         });
@@ -109,14 +113,15 @@ public class activity_write_an_answer extends AppCompatActivity {
                 date.setText(year + "/" + month + "/" + day);
 
                 //질문에 답하기 영역
+                filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
+                file = readDiary(filename);
+                diary.setText(file);
+
+                //일기 영역
                 filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
                 file_write = readDiary(filename_write);
                 question_diary.setText(file_write);
 
-                //일기 영역
-                filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
-                file = readDiary(filename);
-                diary.setText(file);
             }
         });
 
@@ -148,12 +153,9 @@ public class activity_write_an_answer extends AppCompatActivity {
         MenuItem saveItem = menu.findItem(R.id.save);
 
         LinearLayout writeLayout = findViewById(R.id.write);
-        LinearLayout readLayout = findViewById(R.id.read);
 
-        boolean isEditMode = (writeLayout.getVisibility() == View.VISIBLE);
-
-        editModeItem.setVisible(!isEditMode);
-        saveItem.setVisible(isEditMode);
+        editModeItem.setVisible(isEditMode);
+        saveItem.setVisible(!isEditMode);
 
         return true;
     }
@@ -163,19 +165,19 @@ public class activity_write_an_answer extends AppCompatActivity {
 
         int curld = item.getItemId();
         LinearLayout write_layout = findViewById(R.id.write);
-        LinearLayout read_layout = findViewById(R.id.read);
 
         switch (curld){
             case R.id.edit_mode:
-
-                write_layout.setVisibility(View.VISIBLE);
-                read_layout.setVisibility(View.GONE);
+                isEditMode = false;
                 invalidateOptionsMenu();
+
+                hideKeyboard();
 
                 Toast.makeText(this, "편집모드 입니다.", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.save:
                 try{
+                    isEditMode = true;
                     invalidateOptionsMenu();
 
                     //질문 답변
@@ -191,16 +193,6 @@ public class activity_write_an_answer extends AppCompatActivity {
                     outFs.write(str.getBytes());
                     outFs.flush();
                     outFs.close();
-
-                    //편집 모드 레이아웃 숨기고 읽기 모드 레이아웃 보여줌
-                    write_layout.setVisibility(View.GONE);
-                    read_layout.setVisibility(View.VISIBLE);
-
-                    TextView diary_write_read = findViewById(R.id.diary_write_read);
-                    diary_write_read.setText(str_write);
-
-                    TextView diary_read = findViewById(R.id.diary_read);
-                    diary_read.setText(str);
 
                     Toast.makeText(getApplicationContext(), "저장되었습니다", Toast.LENGTH_SHORT).show();
 
@@ -222,4 +214,14 @@ public class activity_write_an_answer extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    // 키보드 숨기기
+    private void hideKeyboard() {
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 }
+
