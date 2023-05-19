@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:id="@+id/activity_write_an_answer"
+    tools:context=".fragment_diary_detail">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">   <!--여기서 날짜 나타냄-->
+
+        <TextView
+            android:id="@+id/pastDate"
+            android:layout_width="3dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="3" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/past_question_text"
+            android:text="오늘의 질문"
+            android:paddingLeft="20dp"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="left" />
+
+            <Button
+                android:id="@+id/past_previous_answer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="이전 답변"
+                android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/write">
+        <EditText
+            android:id="@+id/past_diary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="질문에 대한 일기를 작성하세요"
+             />
+        <EditText
+            android:id="@+id/past_question_diary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="개별 일기를 작성하세요"
+            android:textColor="#000000" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

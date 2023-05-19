@@ -162,6 +162,19 @@ public class activity_write_an_answer extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                filename = Integer.toString(year)+"_"+Integer.toString(month-1)+"_"+Integer.toString(day);
+                file = readDiary(filename);
+                if ( file != null){
+                    Intent intent  = new Intent(activity_write_an_answer.this, past_answers.class);
+                    intent.putExtra("year", year);
+                    intent.putExtra("month", month-1);
+                    intent.putExtra("day", day);
+                    startActivity(intent);
+
+                }else {
+
+                    Toast.makeText(getApplicationContext(),"이전 답변 기록이 없습니다.",Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
