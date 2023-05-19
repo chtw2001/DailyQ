@@ -24,7 +24,6 @@ public class friend_answer_detail extends AppCompatActivity {
         day = intent.getIntExtra("day", 0);
         // id = intent.getStringExtra("id"); // id받아와서 files/id/year_month_day 찾아야 함
 
-
         friend_answer_detail_title = (TextView) findViewById(R.id.friend_answer_detail_title);
         friend_answer_detail_Q = (TextView) findViewById(R.id.friend_answer_detail_Q);
         friend_answer_detail_D = (TextView) findViewById(R.id.friend_answer_detail_D);

@@ -1,7 +1,10 @@
 package com.example.dailyq;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +14,20 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dailyq.ui.dashboard.DashboardFragment;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class friend_answer_list extends AppCompatActivity {
 
@@ -24,6 +37,7 @@ public class friend_answer_list extends AppCompatActivity {
     RelativeLayout relativeLayout;
     public int year, month, day;
     public String id;
+    List<User> friendData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,25 +50,40 @@ public class friend_answer_list extends AppCompatActivity {
 
         friend_answer_list_name = findViewById(R.id.friend_answer_list_name);
         friend_answer_list_View = findViewById(R.id.friend_answer_list_View);
-        adapter = new friend_answer_Adapter(this,  getData());
+
+        friendData = loadFriendData();
+
+        adapter = new friend_answer_Adapter(this, friendData);
         friend_answer_list_View.setAdapter(adapter);
 
     }
 
-    private List<String> getData() {
-        List<String> data = new ArrayList<>();
-        data.add("test 1");
-        data.add("test 2");
-        data.add("test 3");
-        return data;
+    private static final String PREFS_NAME = "FriendDataPrefs";
+    private static final String FRIEND_DATA_KEY = "FriendData";
+
+    private List<User> loadFriendData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String json = sharedPreferences.getString(FRIEND_DATA_KEY, "");
+
+        List<User> friendData = new ArrayList<>();
+
+        // 저장된 데이터가 있을 경우에만 불러오기
+        if (!json.isEmpty()) {
+            // JSON 문자열을 friendData 리스트로 변환
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<User>>() {}.getType();
+            friendData = gson.fromJson(json, type);
+        }
+
+        return friendData;
     }
 
     public class friend_answer_Adapter extends BaseAdapter {
 
         private Context context;
-        private List<String> data;
+        private List<User> data;
 
-        public friend_answer_Adapter(Context context, List<String> data) {
+        public friend_answer_Adapter(Context context, List<User> data) {
             this.context = context;
             this.data = data;
         }
@@ -83,7 +112,7 @@ public class friend_answer_list extends AppCompatActivity {
             }
 
             TextView itemTextView = convertView.findViewById(R.id.friend_answer_list_name);
-            itemTextView.setText(data.get(position));
+            itemTextView.setText(data.get(position).getName());
 
             final View finalConvertView = convertView; // final 변수로 선언
             relativeLayout = convertView.findViewById(R.id.friend_ansewr_list_itme_Layout);
@@ -109,6 +138,28 @@ public class friend_answer_list extends AppCompatActivity {
             }
 
             return convertView;
+        }
+    }
+
+    public class User {
+        private String name;
+        private int id;
+
+        public User(String name, int id) {
+            this.name = name;
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
         }
     }
 

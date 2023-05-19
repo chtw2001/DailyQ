@@ -26,6 +26,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -37,11 +39,22 @@ public class activity_write_an_answer extends AppCompatActivity {
 
     int[] dayonmonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     //    private static String[][] calender;
-    Button prev, next;
+    Button prev, next, previous_answer;
     TextView date, question_text;
     String file, filename, id, file_write, filename_write;
     boolean isEditMode;
     int randomNumber;
+
+//    public class Question {
+//        private int questionNumber;
+//        private ArrayList<LocalDate> dates;
+//
+//        public void addDate(LocalDate date) {
+//            dates.add(date);
+//        }
+//    }
+//
+//    ArrayList<Question> questionDatesArray = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +62,6 @@ public class activity_write_an_answer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_an_answer);
         id = "1";
-
 
         // 인텐트에서 넘어온 데이터 추출
         Intent intent = getIntent();
@@ -59,8 +71,16 @@ public class activity_write_an_answer extends AppCompatActivity {
 
         prev = (Button) findViewById(R.id.prev);
         next = (Button) findViewById(R.id.next);
+        previous_answer = (Button) findViewById(R.id.previous_answer);
+
         date = (TextView) findViewById(R.id.date);
         date.setText(year + "/" + month + "/" + day);
+
+//        Question question = new Question();
+//        question.questionNumber = day;
+//        question.addDate(LocalDate.of(year, month, day));
+//
+//        questionDatesArray.add(question);
 
         question_diary = (EditText) findViewById(R.id.question_diary);
         diary = (EditText) findViewById(R.id.diary);
@@ -74,9 +94,9 @@ public class activity_write_an_answer extends AppCompatActivity {
         file = readDiary(filename);
         diary.setText(file);
 
-        Random random = new Random();
-        randomNumber = random.nextInt(100) + 1;
-        question_text.setText(question_date.readData(this, randomNumber));
+//        Random random = new Random();
+//        randomNumber = random.nextInt(100) + 1;
+        question_text.setText(question_date.readData(this, day));
 
         isEditMode = true; //편집모드 아이콘 Visible 초기값
         prev.setOnClickListener(new View.OnClickListener() {
@@ -90,10 +110,11 @@ public class activity_write_an_answer extends AppCompatActivity {
                 }
                 date.setText(year + "/" + month + "/" + day);
 
-                Random random = new Random();
-                randomNumber = random.nextInt(100) + 1;
+
+//                Random random = new Random();
+//                randomNumber = random.nextInt(100) + 1;
                 Context context = v.getContext();
-                question_text.setText(question_date.readData(context, randomNumber));
+                question_text.setText(question_date.readData(context, day));
 
                 //질문에 답하기 영역
                 filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
@@ -107,6 +128,7 @@ public class activity_write_an_answer extends AppCompatActivity {
 
             }
         });
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,10 +140,10 @@ public class activity_write_an_answer extends AppCompatActivity {
                 }
                 date.setText(year + "/" + month + "/" + day);
 
-                Random random = new Random();
-                randomNumber = random.nextInt(100) + 1;
+//                Random random = new Random();
+//                randomNumber = random.nextInt(100) + 1;
                 Context context = v.getContext();
-                question_text.setText(question_date.readData(context, randomNumber));
+                question_text.setText(question_date.readData(context, day));
 
                 //질문에 답하기 영역
                 filename = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day);
@@ -132,6 +154,14 @@ public class activity_write_an_answer extends AppCompatActivity {
                 filename_write = Integer.toString(year)+"_"+Integer.toString(month)+"_"+Integer.toString(day)+"_"+"write";
                 file_write = readDiary(filename_write);
                 question_diary.setText(file_write);
+
+            }
+        });
+
+        previous_answer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
 
             }
         });

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +29,10 @@ import com.example.dailyq.MainActivity;
 import com.example.dailyq.R;
 import com.example.dailyq.databinding.FragmentDashboardsBinding;
 import com.example.dailyq.friend_timeline;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,14 +41,13 @@ public class DashboardFragment extends Fragment {
 
     private FragmentDashboardsBinding binding;
     private Button friendAddButton;
-    private ArrayList<User> friendData = new ArrayList<>();
+    public ArrayList<User> friendData = new ArrayList<>();
     private FriendListAdapter friendListAdapter;
     TextView user_id;
     int id;
     int i = 1;
 
     RelativeLayout relativeLayout;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +56,15 @@ public class DashboardFragment extends Fragment {
 
         binding = FragmentDashboardsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // 데이터 불러오기
+        loadFriendData();
+        // 값 출력
+        for (User friend : friendData) {
+            System.out.println("이름: " + friend.getName() + ", ID: " + friend.getId());
+            i = friend.getId()+1;
+            System.out.println(i);
+        }
 
         ListView listView = root.findViewById(R.id.friend_list_view);
         friendListAdapter = new FriendListAdapter(getContext(), R.layout.activity_friend_item_layout, friendData);
@@ -72,13 +85,14 @@ public class DashboardFragment extends Fragment {
                         if (!text.isEmpty()) {
                             id = i;
                             friendData.add(new User(text, i));; // EditText에 입력된 텍스트를 리스트뷰에 추가
-
                             i++;
+
+                            saveFriendData();
                             friendListAdapter.notifyDataSetChanged();
 
                             //값 들어갔는지 보기
-                            for(User friend : friendData) {
-                                System.out.println(friend);
+                            for (User friend : friendData) {
+                                System.out.println("친구 추가:::" + "이름: " + friend.getName() + ", ID: " + friend.getId());
                             }
 
                         } else {
@@ -152,7 +166,16 @@ public class DashboardFragment extends Fragment {
                 public void onClick(View v) {
                     // 삭제 버튼을 누르면 해당 아이템 삭제
                     friendData.remove(position);
+                    saveFriendData();
                     notifyDataSetChanged();
+
+                    //삭제 잘 되었는지 확인
+                    for (User friend : friendData) {
+                        System.out.println("친구 추가:::" + "이름: " + friend.getName() + ", ID: " + friend.getId());
+                    }
+
+
+
                 }
             });
             return convertView;
@@ -187,5 +210,40 @@ public class DashboardFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+//    친구 데이터 저장
+
+    // 상수 정의 추가
+    private static final String PREFS_NAME = "FriendDataPrefs";
+    private static final String FRIEND_DATA_KEY = "FriendData";
+    private void saveFriendData() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // friendData 리스트를 JSON 형태로 변환하여 저장
+        Gson gson = new Gson();
+        String json = gson.toJson(friendData);
+
+        editor.putString(FRIEND_DATA_KEY, json);
+        editor.apply();
+
+        //오류 있을때 데이터 싹 비우는 용도
+        //editor.clear().apply();
+
+    }
+
+    private void loadFriendData() {
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String json = sharedPreferences.getString(FRIEND_DATA_KEY, "");
+
+        // 저장된 데이터가 있을 경우에만 불러오기
+        if (!json.isEmpty()) {
+            // JSON 문자열을 friendData 리스트로 변환
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<User>>() {}.getType();
+            friendData = gson.fromJson(json, type);
+
+        }
     }
 }
