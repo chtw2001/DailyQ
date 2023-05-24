@@ -1,3 +1,13 @@
+/*
+"We utilized the Prolific Interactive library material-calendarview:2.0.1
+to support the development of decorate(to add red dot) Calender View."
+
+
+Prolific Interactive. (2018).
+Prolific Interactive Library.
+Retrieved from https://example.com/prolific-interactive-library
+*/
+
 plugins {
     id 'com.android.application'
 }
